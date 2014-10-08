@@ -1,0 +1,109 @@
+html(lang='ko')
+  include oauth2_header
+  body.nodrag.srcollauto
+    #daumWrap.wrap_dna
+      header#daumHead
+        div(style='padding: 10px;') 헤더 영역 미정
+      hr.hide
+      main#daumContent.cont_playground
+        article#mArticle
+          .wrap_tools.clearfix
+            .cont_tool
+              .inner_cont
+                dl.item_tool.clearfix
+                  dt.tool_tit
+                    strong.tit_tool 1. Authorization Code
+                  dd.user_tool
+                    button#getCode_btn.btn.btn-default(type='button', disabled='disabled') Authorization Code 요청하기
+                    button#codeRefresh.btn.btn-default.glyphicon.glyphicon-refresh.btn_refresh.is-disabled(type='button')
+                      span.sr-only 새로고침
+                dl.item_tool.clearfix
+                  dt.tool_tit
+                    strong.tit_tool 2. Access Token
+                  dd.user_tool
+                    button#getToken_btn.btn.btn-default(type='button', disabled='disabled') Access Token 얻기
+                    button#tokenRefresh.btn.btn-default.glyphicon.glyphicon-refresh.btn_refresh.is-disabled(type='button')
+                      span.sr-only 새로고침
+                dl.item_tool.clearfix.on
+                  dt.tool_tit
+                    strong.tit_tool 3. Open API
+                  dd.user_tool
+                    select#select_api.form-control.is-disabled
+                      option(selected='true', style='display: none;') Open API 선택하기
+                      optgroup(label='카페 API')
+                        option(value='0') 알림 정보
+                        option(value='1') 게시글 리스트 보기
+                        option(value='2') 게시판 리스트 보기
+                        option(value='3') 자주가는 카페 목록
+                        option(value='4') 최신글 보기
+                      optgroup(label='블로그 API')
+                        option(value='0') 글 목록
+                        option(value='1') 새 글 쓰기
+                        option(value='2') 글 수정하기
+                        option(value='3') 글 내용 가져오기(글 한개)
+                        option(value='4') 카테고리 목록 가져오기
+                        option(value='5') 댓글 목록 가져오기
+                        option(value='6') 댓글 작성하기
+                        option(value='7') 블로그 정보 가져오기
+                        option(value='8') 나에 대한 반응 목록
+                      optgroup(label='캘린더 API')
+                        option(value='0') 카테고리 생성
+                        option(value='1') 카테고리 조회
+                        option(value='2') 카테고리 수정
+                        option(value='3') 일정 조회
+                      optgroup(label='프로필 API')
+                        option(value='0') 프로필 정보
+                dl.item_tool.clearfix.on
+                  dt.tool_tit
+                    strong.tit_tool 4. URI
+                  dd.user_tool
+                    input#setURI.btn.btn-default(type='text', disabled='disabled')
+                dl.item_tool.clearfix
+                  dt.tool_tit
+                    strong.tit_tool
+                  dd.user_tool
+                    input#runAPI.btn.btn-default.btn_run(type='button', disabled='disabled', value='실행하기')
+                #Iframe.outter_Iframe
+                  div
+                    strong Iframe
+                  .box_Iframe
+                #fullTab
+                  ul#myTab.nav.nav-tabs(role='tablist')
+                    li#2.is-disabled
+                      a(href='#tap_oauthCode', role='tab', data-toggle='tab') Acess Token 요청/응답
+                    li#3.is-disabled(style='float: right;')
+                      a(href='#tap_accessToken', role='tab', data-toggle='tab') API 실행 요청/응답
+                  .tab-content
+                    #tap_oauthCode.tab-pane
+                      .wrap_view.clearfix.accessToken.box_divide
+                        #accessToken_first.box_view
+                          h3
+                            strong   요청
+                        #accessToken_second.box_view
+                          h3
+                            strong   응답
+                    #tap_accessToken.tab-pane
+                      .wrap_view.clearfix.apiExecute.box_divide
+                        #apiExecute_first.box_view
+                          h3
+                            strong   요청
+                        #apiExecute_second.box_view
+                          h3
+                            strong   응답
+                .bar_divide(style='cursor: move;')
+                button.btn_divide(type='button')
+            .cont_help
+              .kanav-bar
+                .text
+                  | API맨
+                  input#kakaoBtn.KakaoBtn(align='left', type='button', value=':')
+                  #kakaoMenu.kakaoMenu
+                    .kakaoStyleMenu
+                    div
+                      input#deleteDialog.btn.btn-default.delete(type='button', value='대화 지우기')
+              .inner_cont.sub
+              .manner_bar
+                div(style='background-color: #ffffff;')
+                  textarea.kakaoInput(type='text')
+                  button.btn.btn-default.submitKakao(type='submit')  전송 
+include oauth2_footer

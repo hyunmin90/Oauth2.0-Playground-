@@ -1,0 +1,328 @@
+//extends layout
+
+block content
+  h2= title
+
+  #accordion.panel-group
+    .panel.panel-info
+        .panel-heading
+          h4.panel-title
+            a(data-toggle='collapse', data-parent='#accordion', href='#collapseOne', onclick='clickStep1();')
+              | Step1. Authorization
+        #collapseOne.panel-collapse.collapse
+          .panel-body
+            .modal-body.row
+              .col-md-5
+                strong 권한 선택
+                div(style='padding:5px;')
+                form#auth_select_form(role='form', method='post', action='/AuthUser')
+                  input#check_all(type='checkbox', name='check_all', onclick='checkAll();')
+                  | 전체선택
+                  div(style='padding:5px;')
+                  input#check_profile(type='checkbox', name='check_profile', onclick='checkProfile();')
+                  | 프로필
+                  div(style='padding:5px;')
+                  input#check_blog(type='checkbox', name='check_blog', onclick='checkBlog();')
+                  | 블로그
+                  div(style='padding:5px;')
+                  input#check_calendar(type='checkbox', name='check_calendar', onclick='checkCalendar();')
+                  | 캘린더
+                  div(style='padding:5px;')
+                  input#check_cafe(type='checkbox', name='check_cafe', onclick='checkCafe();')
+                  | 카페
+                  div(style='padding:10px;')
+                  button.btn.btn-primary#btn_userauth(type='submit', disabled=true) 사용자인증
+                  //-div(style='padding:10px;')
+                  //-.alert.alert-info
+                  //-    button#alert_api.close(type='button', data-dismiss='alert') ×
+                  //-    strong 경고!
+                  //-    |  요청하실 API를 선택하세요!
+
+              .col-md-7     
+                strong OAuth parameter
+                textarea.form-control#text_parameter(type='text', name='Parameters_Area', rows='8', style='background:white', readonly='readonly') #{oauth_parameter}
+                div(style='padding:5px;')
+
+                strong Request
+                textarea.form-control#text_request(type='text', name='Request_Area', rows='8', style='background:white', readonly='readonly') #{header_req}
+                div(style='padding:5px;')
+
+                strong Response
+                textarea.form-control#text_response(type='text',name='Response_Area', rows='8', style='background:white', readonly='readonly') #{header_res} #{value}
+                div(style='padding:5px;')
+
+                button.btn.btn-primary#btn_next(type='button', onclick='next_to_step2();') Next
+
+                script(type='text/javascript').
+                  console.log("START!!!");
+                  if($.cookie('step') == null || $.cookie('step') == '1')
+                    $('#collapseOne').show();
+                  else if($.cookie('step') == '2')
+                    $('#collapseTwo').show();
+                  else if($.cookie('step') == '3')
+                    $('#collapseThree').show(); 
+
+                  if($.cookie('check_all') == 'true')
+                    check_all.checked = true;
+                  if($.cookie('check_profile') == 'true')
+                    check_profile.checked = true;
+                  if($.cookie('check_blog') == 'true')
+                    check_blog.checked = true;
+                  if($.cookie('check_calendar') == 'true')
+                    check_calendar.checked = true;
+                  if($.cookie('check_cafe') == 'true')
+                    check_cafe.checked = true;
+
+                  function checkAll() {
+                    if(check_all.checked) {
+                      check_profile.checked = true;
+                      check_blog.checked = true;
+                      check_calendar.checked = true;
+                      check_cafe.checked = true;
+                      btn_userauth.disabled = false;
+                    }
+                    else{
+                      check_profile.checked = false;
+                      check_blog.checked = false;
+                      check_calendar.checked = false;
+                      check_cafe.checked = false;
+                      btn_userauth.disabled = true;
+                    }
+                    $.cookie('step','1');
+                    $.cookie('check_all', check_all.checked);
+                    $.cookie('check_profile', check_profile.checked);
+                    $.cookie('check_blog', check_blog.checked);
+                    $.cookie('check_calendar', check_calendar.checked);
+                    $.cookie('check_cafe', check_cafe.checked);
+                  }
+
+                  function checkProfile() {
+                    if(!check_profile.checked){
+                      check_all.checked = false;
+                    }
+                    $.cookie('step','1');
+                    $.cookie('check_all', check_all.checked);
+                    $.cookie('check_profile',check_profile.checked);
+                    btn_userauth.disabled = false;
+                    if(!check_all.checked && !check_profile.checked && !check_blog.checked && !check_calendar.checked && !check_cafe.checked)
+                      btn_userauth.disabled = true;
+                  }
+
+                  function checkBlog() {
+                    if(!check_blog.checked){
+                      check_all.checked = false;
+                    }
+                    $.cookie('step','1');
+                    $.cookie('check_all', check_all.checked);
+                    $.cookie('check_blog',check_blog.checked);
+                    btn_userauth.disabled = false;
+                    if(!check_all.checked && !check_profile.checked && !check_blog.checked  && !check_calendar.checked && !check_cafe.checked)
+                      btn_userauth.disabled = true;
+                  }
+
+                  function checkCalendar() {
+                    if(!check_calendar.checked){
+                      check_all.checked = false;
+                    }
+                    $.cookie('step','1');
+                    $.cookie('check_all', check_all.checked);
+                    $.cookie('check_calendar',check_calendar.checked);
+                    btn_userauth.disabled = false;
+                    if(!check_all.checked && !check_profile.checked && !check_blog.checked  && !check_calendar.checked && !check_cafe.checked)
+                      btn_userauth.disabled = true;
+                  }
+
+                  function checkCafe() {
+                    if(!check_cafe.checked){
+                      check_all.checked = false;
+                    }
+                    $.cookie('step','1');
+                    $.cookie('check_all', check_all.checked);
+                    $.cookie('check_cafe',check_cafe.checked);
+                    btn_userauth.disabled = false;
+                    if(!check_all.checked && !check_profile.checked && !check_blog.checked  && !check_calendar.checked && !check_cafe.checked)
+                      btn_userauth.disabled = true;
+                  }
+
+                  function clickStep1() {
+                    $.cookie('step','1');
+                    $('#collapseOne').show();
+                    $('#collapseTwo').hide();
+                    $('#collapseThree').hide();
+                  }
+
+                  //Next 버튼클릭시, 다음 step 보여주기
+                  function next_to_step2() {
+                    $.cookie('step','2');
+                    $('#collapseOne').hide();
+                    $('#collapseTwo').show();
+                    $('#collapseThree').hide();
+                  }
+                
+    .panel.panel-info
+        .panel-heading
+          h4.panel-title
+            a(name='colTwo', data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', onclick='clickStep2();')
+              | Step2. AccessToken Request
+        #collapseTwo.panel-collapse.collapse
+          .panel-body
+            .modal-body.row
+              .col-md-5
+                form(role='form')
+                  div  
+                    label
+                      p Authorization Code
+                      textarea.form-control#text_authcode(type='text', rows='1', style='width:300px;') #{authcode}
+                      div(style='padding:5px;')
+                      button#btn_reqaccess.btn.btn-primary(type='button',name='btn_reqaccess', class='reqaccess') Request AccessToken
+                  div 
+                    label
+                      div(style='padding:10px;')
+                      p Access Token
+                      textarea.form-control#text_accessToken(type='text',name='text_accessToken', rows='auto', style='width:500px;')
+                  div    
+                    label
+                      div(style='padding:10px;')
+                      p Refresh Token
+                      textarea.form-control#text_refreshToken(type='text',name='text_refreshToken', rows='auto', style='width:500px;')
+              .col-md-7     
+                strong OAuth parameter
+                textarea.form-control#text_parameter_2(type='text', rows='8', style='background:white', readonly='readonly')
+                div(style='padding:5px;')
+
+                strong Request
+                textarea.form-control#text_request_2(type='text', rows='8', style='background:white', readonly='readonly')
+                div(style='padding:5px;')
+
+                strong Response
+                textarea.form-control#text_response_2(type='text', rows='8', style='background:white', readonly='readonly')
+                div(style='padding:5px;')
+
+                button.btn.btn-primary#btn_next(type='submit', onclick='next_to_step3();') Next
+
+                script(type='text/javascript').
+                  $(function() {
+                    $('#btn_reqaccess').on('click', function() {
+                        $.ajax({
+                          type: "POST",
+                          url: 'http://172.16.12.5:3000/getAccessToken',
+                          data: {
+                            grant_type: "authorization_code",
+                            code: '#{authcode}',
+                            client_id: "1234567890",
+                            client_secret: "75fba1",
+                          },
+                          success: function(data) {
+                            var tmpToken = JSON.parse(data);
+                            var header_req = '';
+                            var header_res = '';
+
+                            //data.token , tempToekn.token
+
+                            //oauth parameter
+                            document.getElementById('text_parameter_2').value = tmpToken.oauth_parameter;
+
+                            //accessToken, refreshToken
+                            document.getElementById('text_accessToken').value = tmpToken.token.access_token;
+                            document.getElementById('text_refreshToken').value = tmpToken.token.refresh_token;
+
+                            console.log("SCOPSE");
+                            //console.log(JSON.parse(tmpToken.token.scopse));
+                            //step 2 request
+                            for(var header in tmpToken.header_req) {
+                              header_req += (header + " : " + tmpToken.header_req[header] + '\n');
+                            }
+                            document.getElementById('text_request_2').value = header_req;
+
+                            //step 2 response
+                            for(var header in tmpToken.header_res) {
+                              header_res += (header + " : " + tmpToken.header_res[header] + '\n');
+                            }
+                            header_res += '\n' + JSON.stringify(tmpToken.token, null, 4);
+                            document.getElementById('text_response_2').value = header_res;
+                          }
+
+                        });
+                    });
+                  });
+
+                  function clickStep2() {
+                    $.cookie('step','2');
+                    $('#collapseOne').hide();
+                    $('#collapseTwo').show();
+                    $('#collapseThree').hide();
+                  }
+
+                  //Next 버튼클릭시, 다음 step 보여주기
+                  function next_to_step3() {
+                    $.cookie('step','3');
+                    $('#collapseOne').hide();
+                    $('#collapseTwo').hide();
+                    $('#collapseThree').show();
+                  }
+
+
+    .panel.panel-info
+        .panel-heading
+          h4.panel-title
+            a(data-toggle='collapse', data-parent='#accordion', href='#collapseThree', onclick='clickStep3();')
+              | Step3. API Call
+        #collapseThree.panel-collapse.collapse
+          .panel-body
+            .modal-body.row
+              .col-md-5
+                strong HTTP Method
+                div(style='padding:5px;')
+                .btn-group
+                  button#dropdownMethod.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown')
+                    | Action
+                    span.caret
+                  ul.dropdown-menu(role='menu', aria-labelledby='dropdownMethod')
+                    li(role='presentation')
+                      a(role='menuitem', href='#') GET
+                    li(role='presentaion')
+                      a(role='menuitem', href='#') POST
+
+                //-dropdown menuitem 클릭시 선택item 표시
+                script(type='text/javascript').
+                  $('.dropdown-menu li a').click(function() {
+                    var selText = $(this).text();
+                    $(this).parents('.btn-group').find('.dropdown-toggle').html(selText+' <span class="caret"></span>');
+                  });
+                
+                div(style='padding:5px;')
+                strong Operation List
+                div(style='padding:5px;')
+                .dropdown
+                button#dropdownList.btn.btn-default.dropdown-toggle(type='button', data-toggle='dropdown')
+                    | List
+                  //- API 별로 리스트뽑아보는법 찾고 menuitem에 추가시키기
+
+                div(style='padding:10px;')
+
+                strong Request URI
+                div(style='padding:5px;')
+                textarea.form-control#text_requrl(type='text', style='background:white', readonly='readonly')
+                div(style='padding:10px;')
+                button.btn.btn-primary#btn_sendreq(type='submit') Send The Request
+
+              .col-md-7
+                strong OAuth parameter
+                textarea.form-control#text_parameter(type='text', rows='8', style='background:white', readonly='readonly')
+                div(style='padding:5px;')
+
+                strong Request
+                textarea.form-control#text_request(type='text', rows='8', style='background:white', readonly='readonly')
+                div(style='padding:5px;')
+                
+                strong Response
+                textarea.form-control#text_response(type='text', rows='8', style='background:white', readonly='readonly')
+
+                //-dropdown menuitem 클릭시 선택item 표시
+                script(type='text/javascript').
+                  function clickStep3() {
+                    $.cookie('step','3');
+                    $('#collapseOne').hide();
+                    $('#collapseTwo').hide();
+                    $('#collapseThree').show();
+                  }
