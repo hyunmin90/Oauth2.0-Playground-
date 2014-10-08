@@ -1,3 +1,4 @@
+var app = express();
 var express = require('express');
 var path = require('path');
 var favicon = require('static-favicon');
@@ -12,12 +13,9 @@ var getAccessToken = require('./routes/getAccessToken');
 var getRefreshToken = require('./routes/getRefreshToken');
 var executeAPI = require('./routes/executeAPI');
 
-var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
-
 app.set('port', process.env.PORT || 3000);
 
 app.use(favicon());
@@ -39,7 +37,6 @@ app.use(function(req, res, next) {
     err.status = 404;
     next(err);
 });
-
 
 /// error handlers
 // development error handler
