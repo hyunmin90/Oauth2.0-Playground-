@@ -1,4 +1,3 @@
-var app = express();
 var express = require('express');
 var path = require('path');
 var favicon = require('static-favicon');
@@ -7,12 +6,12 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var http = require('http');
 
-var routes = require('./routes/index');
-var getAuthCode = require('./routes/getAuthCode');
-var getAccessToken = require('./routes/getAccessToken');
-var getRefreshToken = require('./routes/getRefreshToken');
-var executeAPI = require('./routes/executeAPI');
-
+var routes = require('./routes/oauth2/index');
+var getAuthCode = require('./routes/oauth2/getAuthCode');
+var getAccessToken = require('./routes/oauth2/getAccessToken');
+var getRefreshToken = require('./routes/oauth2/getRefreshToken');
+var executeAPI = require('./routes/oauth2/executeAPI');
+var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -25,7 +24,7 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
+app.use('/tools/oauth2', routes);
 app.use('/tools/oauth2/getAuthCode', getAuthCode);
 app.use('/tools/oauth2/getAccessToken', getAccessToken);
 app.use('/tools/oauth2/getRefreshToken', getRefreshToken);
