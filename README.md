@@ -1,2 +1,2 @@
-go2hellnode
+Daum Oauth2.0 playground 
 ===========
